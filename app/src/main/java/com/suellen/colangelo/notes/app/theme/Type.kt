@@ -1,4 +1,4 @@
-package com.suellen.colangelo.notes.ui.theme
+package com.suellen.colangelo.notes.app.theme
 
 import androidx.compose.material3.Typography
 
