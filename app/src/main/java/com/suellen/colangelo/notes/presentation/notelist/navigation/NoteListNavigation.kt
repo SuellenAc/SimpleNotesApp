@@ -8,6 +8,6 @@ const val noteListRoute = "note_list"
 
 fun NavGraphBuilder.openNoteList(onNoteClick: () -> Unit) {
     composable(noteListRoute) {
-        NoteListScreen(onNoteClick)
+        NoteListScreen { onNoteClick() }
     }
 }
