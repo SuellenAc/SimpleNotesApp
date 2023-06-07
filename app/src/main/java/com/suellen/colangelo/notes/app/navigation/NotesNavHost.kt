@@ -5,7 +5,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.suellen.colangelo.notes.presentation.notedetails.navigation.navigateToNoteDetails
 import com.suellen.colangelo.notes.presentation.notedetails.navigation.openNoteDetails
 import com.suellen.colangelo.notes.presentation.notelist.navigation.openNoteList
 
@@ -15,16 +14,12 @@ fun NotesNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController()
 ) {
-
     NavHost(
         navController = navController,
         startDestination = startDestination,
         modifier = modifier,
     ) {
-        openNoteList(
-            onNoteClick = { navController.navigateToNoteDetails() }
-        )
+        openNoteList(navController = navController)
         openNoteDetails()
     }
-
 }

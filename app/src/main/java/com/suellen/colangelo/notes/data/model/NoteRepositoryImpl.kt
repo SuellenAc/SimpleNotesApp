@@ -5,13 +5,13 @@ import com.suellen.colangelo.notes.domain.model.Note
 import javax.inject.Inject
 
 class NoteRepositoryImpl @Inject constructor() : NoteRepository {
-    private val notes = mutableMapOf<Long, Note>()
+    private val notes = mutableMapOf<String, Note>()
 
     override fun getAllNotes(): List<Note> {
         return notes.values.toList()
     }
 
-    override fun getNote(id: Long): Note? {
+    override fun getNote(id: String): Note? {
         return notes[id]
     }
 
@@ -19,7 +19,7 @@ class NoteRepositoryImpl @Inject constructor() : NoteRepository {
         notes[note.id] = note
     }
 
-    override fun deleteNote(id: Long) {
+    override fun deleteNote(id: String) {
         notes.remove(id)
     }
 

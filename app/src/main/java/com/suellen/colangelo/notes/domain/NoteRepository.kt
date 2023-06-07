@@ -4,8 +4,8 @@ import com.suellen.colangelo.notes.domain.model.Note
 
 interface NoteRepository {
     fun getAllNotes(): List<Note>
-    fun getNote(id: Long): Note?
+    fun getNote(id: String): Note?
     fun addNote(note: Note)
-    fun deleteNote(id: Long)
+    fun deleteNote(id: String)
     fun updateNote(note: Note)
 }
