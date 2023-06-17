@@ -13,4 +13,18 @@ class NoteListViewModel @Inject constructor() : ViewModel() {
     private val _notes = MutableStateFlow<List<NoteUiModel>>(listOf())
     val notes: StateFlow<List<NoteUiModel>> = _notes
 
+    private val _searchToken = MutableStateFlow<String?>(null)
+    val searchToken: StateFlow<String?> = _searchToken
+
+    init {
+        val uiModel = NoteUiModel(
+            id = "id",
+            title = "title",
+            description = "description"
+        )
+        _notes.value = (1..10).map {
+            uiModel
+        }
+    }
+
 }
