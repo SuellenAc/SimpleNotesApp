@@ -1,6 +1,7 @@
 package com.suellen.colangelo.notes.presentation.notelist
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,11 +9,13 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -58,6 +61,7 @@ fun NoteListScreen(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun NoteListContent(
     notes: List<NoteUiModel>,
@@ -73,7 +77,7 @@ private fun NoteListContent(
             Row(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
-                    .height(64.dp),
+                    .height(80.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
             ) {
@@ -106,7 +110,11 @@ private fun NoteListContent(
         },
         modifier = Modifier.fillMaxSize()
     ) { paddingValues ->
-        LazyColumn(
+        LazyVerticalStaggeredGrid(
+            columns = StaggeredGridCells.Adaptive(172.dp),
+            verticalItemSpacing = 8.dp,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(horizontal = 8.dp),
             modifier = Modifier.padding(paddingValues),
             content = {
                 items(notes) { note ->
@@ -130,13 +138,14 @@ private fun NoteItem(
             modifier = Modifier
                 .clickable { onNoteClick(note) }
                 .padding(16.dp)
+                .fillMaxWidth()
         ) {
             Text(
                 text = note.title,
                 maxLines = maxLines,
                 style = MaterialTheme.typography.titleMedium
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = note.description,
                 maxLines = maxLines,

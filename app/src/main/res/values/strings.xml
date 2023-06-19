@@ -2,5 +2,6 @@
     <string name="app_name">notes</string>
     <string name="notes_screen_title">Notes</string>
     <string name="note_detail_screen_title">Note Detail</string>
+    <string name="note_detail_screen_save_button">Save</string>
     <string name="note_screen_search_placeholder">Search notes</string>
 </resources>

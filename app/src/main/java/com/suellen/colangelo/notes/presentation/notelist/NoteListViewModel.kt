@@ -22,7 +22,7 @@ class NoteListViewModel @Inject constructor() : ViewModel() {
             title = "title",
             description = "description"
         )
-        _notes.value = (1..10).map {
+        _notes.value = (1..50).map {
             uiModel
         }
     }

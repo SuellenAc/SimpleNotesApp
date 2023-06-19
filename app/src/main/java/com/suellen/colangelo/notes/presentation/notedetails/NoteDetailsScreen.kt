@@ -1,9 +1,15 @@
 package com.suellen.colangelo.notes.presentation.notedetails
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -46,19 +52,35 @@ private fun NoteDetailsContent(
                         style = Typography.titleLarge
                     )
                 },
+                navigationIcon = {
+                    // adicionar padding
+                    Icon(Icons.Outlined.ArrowBack, contentDescription = ""/*Todo - accessibility*/)
+                },
+                actions = {
+                    Button(onClick = { /*TODO*/ }) {
+                        Text(text = stringResource(id = R.string.note_detail_screen_save_button))
+                    }
+                },
                 scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
             )
         }
     ) { paddingValues ->
-        Column(Modifier.padding(paddingValues)) {
+        Column(
+            Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+        ) {
             TextField(
                 value = note.title,
+                modifier = Modifier.fillMaxWidth(),
                 onValueChange = { onTitleChanged(it) }
             )
             TextField(
                 value = note.description,
                 onValueChange = { onDescriptionChanged(it) },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
             )
         }
     }
