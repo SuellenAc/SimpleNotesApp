@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -55,8 +57,9 @@ fun NoteListScreen(
     navController: NavHostController,
 ) {
     NoteListContent(
-        viewModel.notes.collectAsState().value,
-        viewModel.searchToken.collectAsState().value,
+        notes = viewModel.notes.collectAsState().value,
+        searchToken = viewModel.searchToken.collectAsState().value,
+        showGrid = false,
         onFabClick = {},
         onNoteClick = {
             navController.navigateToNoteDetails()
@@ -65,11 +68,11 @@ fun NoteListScreen(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun NoteListContent(
     notes: List<NoteUiModel>,
     searchToken: String?,
+    showGrid: Boolean,
     onFabClick: () -> Unit,
     onNoteClick: (NoteUiModel) -> Unit,
     onSearchTokenChanged: (String) -> Unit,
@@ -82,7 +85,7 @@ private fun NoteListContent(
             Toolbar(text)
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { onFabClick() }){
+            FloatingActionButton(onClick = { onFabClick() }) {
                 Icon(
                     Icons.Outlined.AddCircle,
                     contentDescription = stringResource(
@@ -93,19 +96,59 @@ private fun NoteListContent(
         },
         modifier = Modifier.fillMaxSize()
     ) { paddingValues ->
-        LazyVerticalStaggeredGrid(
-            columns = StaggeredGridCells.Adaptive(172.dp),
-            verticalItemSpacing = 8.dp,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(horizontal = 8.dp),
-            modifier = Modifier.padding(paddingValues),
-            content = {
-                items(notes) { note ->
-                    NoteItem(onNoteClick, note)
-                }
-            }
-        )
+        if (showGrid) {
+            GridComponent(
+                paddingValues = paddingValues,
+                notes = notes,
+                onNoteClick = onNoteClick
+            )
+        } else {
+            ListComponent(
+                paddingValues = paddingValues,
+                notes = notes,
+                onNoteClick = onNoteClick
+            )
+        }
     }
+}
+
+@Composable
+private fun ListComponent(
+    paddingValues: PaddingValues,
+    notes: List<NoteUiModel>,
+    onNoteClick: (NoteUiModel) -> Unit
+) {
+    LazyColumn(
+        contentPadding = PaddingValues(horizontal = 8.dp),
+        modifier = Modifier.padding(paddingValues),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        content = {
+            items(notes) { note ->
+                NoteItem(onNoteClick, note)
+            }
+        }
+    )
+}
+
+@Composable
+@OptIn(ExperimentalFoundationApi::class)
+private fun GridComponent(
+    paddingValues: PaddingValues,
+    notes: List<NoteUiModel>,
+    onNoteClick: (NoteUiModel) -> Unit
+) {
+    LazyVerticalStaggeredGrid(
+        columns = StaggeredGridCells.Adaptive(172.dp),
+        verticalItemSpacing = 8.dp,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(horizontal = 8.dp),
+        modifier = Modifier.padding(paddingValues),
+        content = {
+            items(notes) { note ->
+                NoteItem(onNoteClick, note)
+            }
+        }
+    )
 }
 
 @Composable
@@ -187,6 +230,7 @@ fun NoteListScreenPreview() {
         NoteListContent(
             notes = listOf(),
             searchToken = "",
+            showGrid = true,
             onFabClick = {},
             onNoteClick = {},
             onSearchTokenChanged = {}
