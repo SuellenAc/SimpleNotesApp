@@ -1,7 +1,11 @@
 <resources>
     <string name="app_name">notes</string>
-    <string name="notes_screen_title">Notes</string>
+    <!--  Note detail  -->
     <string name="note_detail_screen_title">Note Detail</string>
     <string name="note_detail_screen_save_button">Save</string>
+    <!--  Note list  -->
+    <string name="notes_screen_title">Notes</string>
     <string name="note_screen_search_placeholder">Search notes</string>
+    <string name="note_screen_add_button_content_description">Add note</string>
+    <string name="note_screen_list_format_content_description">View as list</string>
 </resources>

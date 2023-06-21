@@ -19,15 +19,18 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.material.icons.outlined.List
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,6 +57,7 @@ fun NoteListScreen(
     NoteListContent(
         viewModel.notes.collectAsState().value,
         viewModel.searchToken.collectAsState().value,
+        onFabClick = {},
         onNoteClick = {
             navController.navigateToNoteDetails()
         },
@@ -66,6 +70,7 @@ fun NoteListScreen(
 private fun NoteListContent(
     notes: List<NoteUiModel>,
     searchToken: String?,
+    onFabClick: () -> Unit,
     onNoteClick: (NoteUiModel) -> Unit,
     onSearchTokenChanged: (String) -> Unit,
 ) {
@@ -74,38 +79,16 @@ private fun NoteListContent(
     }
     Scaffold(
         topBar = {
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .height(80.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-            ) {
-                OutlinedTextField(
-                    value = text.value,
-                    onValueChange = { text.value = it },
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(end = 8.dp)
-                        .height(54.dp),
-                    singleLine = true,
-                    textStyle = MaterialTheme.typography.titleSmall,
-                    placeholder = {
-                        Text(
-                            text = stringResource(R.string.note_screen_search_placeholder),
-                            style = MaterialTheme.typography.titleSmall
-                        )
-                    },
-                    shape = RoundedCornerShape(30.dp)
+            Toolbar(text)
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = { onFabClick() }){
+                Icon(
+                    Icons.Outlined.AddCircle,
+                    contentDescription = stringResource(
+                        id = R.string.note_screen_add_button_content_description
+                    )
                 )
-                Button(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier.size(36.dp),
-                    contentPadding = PaddingValues(0.dp),
-                    shape = CircleShape
-                ) {
-                    Icon(Icons.Outlined.List, contentDescription = "")
-                }
             }
         },
         modifier = Modifier.fillMaxSize()
@@ -122,6 +105,48 @@ private fun NoteListContent(
                 }
             }
         )
+    }
+}
+
+@Composable
+private fun Toolbar(text: MutableState<String>) {
+    Row(
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .height(80.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+    ) {
+        OutlinedTextField(
+            value = text.value,
+            onValueChange = { text.value = it },
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 8.dp)
+                .height(54.dp),
+            singleLine = true,
+            textStyle = MaterialTheme.typography.titleSmall,
+            placeholder = {
+                Text(
+                    text = stringResource(R.string.note_screen_search_placeholder),
+                    style = MaterialTheme.typography.titleSmall
+                )
+            },
+            shape = RoundedCornerShape(30.dp)
+        )
+        Button(
+            onClick = { /*TODO*/ },
+            modifier = Modifier.size(36.dp),
+            contentPadding = PaddingValues(0.dp),
+            shape = CircleShape
+        ) {
+            Icon(
+                Icons.Outlined.List,
+                contentDescription = stringResource(
+                    id = R.string.note_screen_list_format_content_description
+                )
+            )
+        }
     }
 }
 
@@ -155,7 +180,6 @@ private fun NoteItem(
     }
 }
 
-
 @Composable
 @Preview
 fun NoteListScreenPreview() {
@@ -163,6 +187,7 @@ fun NoteListScreenPreview() {
         NoteListContent(
             notes = listOf(),
             searchToken = "",
+            onFabClick = {},
             onNoteClick = {},
             onSearchTokenChanged = {}
         )
