@@ -3,6 +3,7 @@ package com.suellen.colangelo.notes.presentation.notelist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.suellen.colangelo.notes.domain.usecase.GetAllNotesUseCase
+import com.suellen.colangelo.notes.presentation.mapper.NoteToUiMapper
 import com.suellen.colangelo.notes.presentation.model.NoteUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,6 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoteListViewModel @Inject constructor(
+    private val mapper: NoteToUiMapper,
     private val getAllNotes: GetAllNotesUseCase,
 ) : ViewModel() {
 
@@ -23,13 +25,7 @@ class NoteListViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _notes.value = getAllNotes().map {
-                NoteUiModel(
-                    id = it.id,
-                    title = it.title,
-                    description = it.description,
-                )
-            }
+            _notes.value = getAllNotes().map { mapper.mapFrom(it) }
         }
     }
 }

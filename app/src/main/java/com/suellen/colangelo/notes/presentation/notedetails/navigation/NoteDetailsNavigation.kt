@@ -8,18 +8,22 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.suellen.colangelo.notes.presentation.notedetails.NoteDetailsScreen
 
-private const val noteId = "noteId"
-const val noteDetailsRoute = "noteDetails/{$noteId}"
+private const val argNoteId = "noteId"
 
-fun NavController.navigateToNoteDetails(navOptions: NavOptions? = null) {
-    this.navigate(noteDetailsRoute, navOptions)
+// navigates
+fun NavController.navigateToNoteDetails(noteId: String?, navOptions: NavOptions? = null) {
+    this.navigate(getRoute(noteId), navOptions)
 }
 
+// register the route
 fun NavGraphBuilder.openNoteDetails() {
     composable(
-        noteDetailsRoute,
-        arguments = listOf(navArgument(noteId) { type = NavType.StringType })
+        "noteDetails?noteId={noteId}",
+        arguments = listOf(navArgument(argNoteId) { type = NavType.StringType })
     ) { backStackEntry ->
-        NoteDetailsScreen(noteId = backStackEntry.arguments?.getString(noteId))
+        NoteDetailsScreen(noteId = backStackEntry.arguments?.getString(argNoteId))
     }
 }
+
+private fun getRoute(noteId: String?): String =
+    noteId?.let { "noteDetails?noteId=$it" } ?: "noteDetails"

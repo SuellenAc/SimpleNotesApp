@@ -73,6 +73,10 @@ dependencies {
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$android_junit_test_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$expresso_version"
+
+    // Room
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
 }
 
 // Allow references to generated code

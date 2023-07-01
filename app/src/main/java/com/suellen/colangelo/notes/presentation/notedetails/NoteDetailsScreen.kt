@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,14 +30,18 @@ fun NoteDetailsScreen(
     noteId: String?,
     viewModel: NoteDetailsViewModel = hiltViewModel(),
 ) {
-    NoteDetailsContent(
-        note = getMockUiModel(),
-        onTitleChanged = {},
-        onDescriptionChanged = {}
-    )
+    viewModel.initialize(noteId)
+    when (val state = viewModel.state.collectAsState().value) {
+        is NoteDetailState.Loading -> Unit
+        is NoteDetailState.Error -> Unit
+        is NoteDetailState.Success -> NoteDetailsContent(
+            note = state.note,
+            onTitleChanged = {},
+            onDescriptionChanged = {}
+        )
+    }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun NoteDetailsContent(
     note: NoteUiModel,
@@ -45,24 +50,7 @@ private fun NoteDetailsContent(
 ) {
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(id = R.string.note_detail_screen_title),
-                        style = Typography.titleLarge
-                    )
-                },
-                navigationIcon = {
-                    // adicionar padding
-                    Icon(Icons.Outlined.ArrowBack, contentDescription = ""/*Todo - accessibility*/)
-                },
-                actions = {
-                    Button(onClick = { /*TODO*/ }) {
-                        Text(text = stringResource(id = R.string.note_detail_screen_save_button))
-                    }
-                },
-                scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-            )
+            Toolbar()
         }
     ) { paddingValues ->
         Column(
@@ -84,6 +72,29 @@ private fun NoteDetailsContent(
             )
         }
     }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun Toolbar() {
+    CenterAlignedTopAppBar(
+        title = {
+            Text(
+                text = stringResource(id = R.string.note_detail_screen_title),
+                style = Typography.titleLarge
+            )
+        },
+        navigationIcon = {
+            // adicionar padding
+            Icon(Icons.Outlined.ArrowBack, contentDescription = ""/*Todo - accessibility*/)
+        },
+        actions = {
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = stringResource(id = R.string.note_detail_screen_save_button))
+            }
+        },
+        scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    )
 }
 
 @Composable

@@ -10,10 +10,11 @@ class NoteRepositoryImpl @Inject constructor() : NoteRepository {
 
     init {
         (1..50).forEach {
-            notes[it.toString()] = Note(
-                id = getRandomUUID(),
-                title = "title - $it",
-                description = "description - $it"
+            val id = getRandomUUID()
+            notes[id] = Note(
+                id = id,
+                title = "title - $id",
+                description = "description - $id"
             )
         }
     }
