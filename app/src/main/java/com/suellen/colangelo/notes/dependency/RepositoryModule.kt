@@ -1,6 +1,6 @@
 package com.suellen.colangelo.notes.dependency
 
-import com.suellen.colangelo.notes.data.model.NoteRepositoryImpl
+import com.suellen.colangelo.notes.data.NoteRepositoryImpl
 import com.suellen.colangelo.notes.domain.NoteRepository
 import dagger.Binds
 import dagger.Module

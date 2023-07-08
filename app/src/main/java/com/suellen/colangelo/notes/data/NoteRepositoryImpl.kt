@@ -1,4 +1,4 @@
-package com.suellen.colangelo.notes.data.model
+package com.suellen.colangelo.notes.data
 
 import com.suellen.colangelo.notes.domain.NoteRepository
 import com.suellen.colangelo.notes.domain.model.Note

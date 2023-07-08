@@ -70,9 +70,15 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
+    // coroutines android
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+
     testImplementation "junit:junit:$junit_version"
+    testImplementation "io.mockk:mockk:$mockk_version"
     androidTestImplementation "androidx.test.ext:junit:$android_junit_test_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$expresso_version"
+
 
     // Room
     implementation("androidx.room:room-runtime:$room_version")

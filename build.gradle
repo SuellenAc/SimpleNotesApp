@@ -11,6 +11,8 @@ buildscript {
         room_version = "2.5.2"
 
         junit_version = '4.13.2'
+        coroutines_version = '1.6.4'
+        mockk_version = '1.13.5'
         android_junit_test_version = '1.1.5'
         expresso_version = '3.5.1'
     }
